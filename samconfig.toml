@@ -3,8 +3,7 @@ version = 0.1
 [default.deploy]
 [default.deploy.parameters]
 stack_name = "todolist"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-8vvfdhy9l643"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-104te82p3024z"
 s3_prefix = "todolist"
 region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
-
