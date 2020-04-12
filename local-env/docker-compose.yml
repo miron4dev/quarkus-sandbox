@@ -1,0 +1,21 @@
+version: '3'
+services:
+  localstack:
+    container_name: todolist-localstack
+    build:
+      context: .
+    ports:
+      - "4567-4586:4567-4586"
+      - "${PORT_WEB_UI-8888}:${PORT_WEB_UI-8888}"
+    network_mode: "bridge"
+    environment:
+      - SERVICES=s3,lambda,dynamodb,apigateway
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=key
+      - AWS_SECRET_ACCESS_KEY=secret
+      - DEBUG=1
+      - "HOSTNAME=${MY_DOCKER_IP:-127.0.0.1}"
+      - "HOSTNAME_EXTERNAL=${MY_DOCKER_IP:-127.0.0.1}"
+      - "PORT_WEB_UI=${PORT_WEB_UI:-8888}"
+    volumes:
+      - ./tmp:/tmp/localstack

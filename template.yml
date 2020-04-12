@@ -1,0 +1,70 @@
+  AWSTemplateFormatVersion: '2010-09-09'
+  Transform: AWS::Serverless-2016-10-31
+  Description: Todolist template
+  Globals:
+    Function:
+      Timeout: 20
+  Resources:
+    CreateTaskFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        FunctionName: CreateTask
+        CodeUri: target/function.zip
+        Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+        Runtime: provided
+        MemorySize: 128
+        Policies:
+          - AmazonDynamoDBFullAccess
+          - AWSLambdaInvocation-DynamoDB
+        Environment:
+          Variables:
+            QUARKUS_LAMBDA_HANDLER: create-task
+            DISABLE_SIGNAL_HANDLERS: true
+        Events:
+          HttpPost:
+            Type: Api
+            Properties:
+              Path: '/tasks'
+              Method: POST
+    GetTaskFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        FunctionName: GetTask
+        CodeUri: target/function.zip
+        Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+        Runtime: provided
+        MemorySize: 128
+        Policies:
+          - AmazonDynamoDBFullAccess
+          - AWSLambdaInvocation-DynamoDB
+        Environment:
+          Variables:
+            QUARKUS_LAMBDA_HANDLER: get-task-by-id
+            DISABLE_SIGNAL_HANDLERS: true
+        Events:
+          HttpPost:
+            Type: Api
+            Properties:
+              Path: '/tasks/{id}'
+              Method: GET
+    DeleteTaskFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        FunctionName: DeleteTask
+        CodeUri: target/function.zip
+        Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+        Runtime: provided
+        MemorySize: 128
+        Policies:
+          - AmazonDynamoDBFullAccess
+          - AWSLambdaInvocation-DynamoDB
+        Environment:
+          Variables:
+            QUARKUS_LAMBDA_HANDLER: delete-task-by-id
+            DISABLE_SIGNAL_HANDLERS: true
+        Events:
+          HttpPost:
+            Type: Api
+            Properties:
+              Path: '/tasks/{id}'
+              Method: DELETE
