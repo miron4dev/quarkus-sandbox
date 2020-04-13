@@ -6,7 +6,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 import java.util.UUID
 
 @RegisterForReflection
-data class GetTaskRequest @JsonCreator constructor(
+data class GetAllTasksRequest @JsonCreator constructor(
         @JsonProperty("userId")
         val userId: UUID
 )

@@ -3,10 +3,10 @@ package com.miron.todolist.model
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.quarkus.runtime.annotations.RegisterForReflection
-import java.util.*
+import java.util.UUID
 
 @RegisterForReflection
 data class DeleteTaskRequest @JsonCreator constructor(
-        @JsonProperty("id")
-        val id: UUID
+        @JsonProperty("userId")
+        val userId: UUID
 )

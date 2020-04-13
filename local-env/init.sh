@@ -1,7 +1,9 @@
 awslocal dynamodb create-table \
   --table-name todolist \
   --key-schema \
-      AttributeName="Task Id",KeyType=HASH \
+      AttributeName="UserId",KeyType=HASH \
+      AttributeName="TaskId",KeyType=RANGE \
   --attribute-definitions \
-      AttributeName="Task Id",AttributeType=S \
+      AttributeName="UserId",AttributeType=S \
+      AttributeName="TaskId",AttributeType=S \
   --billing-mode PAY_PER_REQUEST
