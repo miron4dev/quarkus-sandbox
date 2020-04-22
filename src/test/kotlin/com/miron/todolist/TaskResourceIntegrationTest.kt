@@ -3,12 +3,10 @@ package com.miron.todolist
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.miron.todolist.model.CreateTaskRequest
-import com.miron.todolist.model.DeleteTaskRequest
-import com.miron.todolist.model.GetAllTasksRequest
-import com.miron.todolist.model.GetTaskRequest
 import com.miron.todolist.model.Task
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
+import io.restassured.http.Header
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.notNullValue
@@ -19,6 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import java.util.*
 import javax.inject.Inject
+import javax.ws.rs.core.HttpHeaders
 import org.hamcrest.Matchers.`is` as Is
 
 @QuarkusTest
@@ -31,9 +30,10 @@ internal class TaskResourceIntegrationTest {
     @Test
     @Order(1)
     fun shouldCreateNewTask() {
-        val request = CreateTaskRequest(userId = userId, name = "test task", description = "test description")
+        val request = CreateTaskRequest(name = "test task", description = "test description")
         val response = given()
                 .contentType("application/json")
+                .header(Header(HttpHeaders.AUTHORIZATION, userId.toString()))
                 .body(objectMapper.writeValueAsString(request))
                 .`when`().put("/tasks")
                 .thenReturn()
@@ -49,10 +49,9 @@ internal class TaskResourceIntegrationTest {
     @Test
     @Order(2)
     fun shouldReturnTaskById() {
-        val request = GetTaskRequest(userId)
         val response = given()
                 .contentType("application/json")
-                .body(objectMapper.writeValueAsString(request))
+                .header(Header(HttpHeaders.AUTHORIZATION, userId.toString()))
                 .`when`().get("/tasks/" + taskId.toString())
                 .thenReturn()
 
@@ -69,10 +68,9 @@ internal class TaskResourceIntegrationTest {
     @Test
     @Order(3)
     fun shouldReturnAllTasks() {
-        val request = GetAllTasksRequest(userId)
         val response = given()
                 .contentType("application/json")
-                .body(objectMapper.writeValueAsString(request))
+                .header(Header(HttpHeaders.AUTHORIZATION, userId.toString()))
                 .`when`().get("/tasks")
                 .thenReturn()
 
@@ -92,10 +90,9 @@ internal class TaskResourceIntegrationTest {
     @Test
     @Order(4)
     fun shouldDeleteTaskById() {
-        val request = DeleteTaskRequest(userId)
         val response = given()
                 .contentType("application/json")
-                .body(objectMapper.writeValueAsString(request))
+                .header(Header(HttpHeaders.AUTHORIZATION, userId.toString()))
                 .`when`().delete("/tasks/" + taskId.toString())
                 .thenReturn()
 

@@ -65,11 +65,11 @@ class TaskService @Inject constructor(
         dynamoClient.deleteItem(request)
     }
 
-    fun create(task: CreateTaskRequest): UUID {
+    fun create(userId: UUID, task: CreateTaskRequest): UUID {
         val taskId = UUID.randomUUID()
 
         val item = mapOf<String, AttributeValue>(
-                TodolistTable.USER_ID.columnName to AttributeValue.builder().s(task.userId.toString()).build(),
+                TodolistTable.USER_ID.columnName to AttributeValue.builder().s(userId.toString()).build(),
                 TodolistTable.TASK_ID.columnName to AttributeValue.builder().s(taskId.toString()).build(),
                 TodolistTable.TASK_NAME.columnName to AttributeValue.builder().s(task.name).build(),
                 TodolistTable.TASK_DESCRIPTION.columnName to AttributeValue.builder().s(task.description).build(),
